@@ -45,6 +45,7 @@ const SwitchToggle = () => {
       defaultChecked
       onChange={toggleDarkMode}
       className="bg-gray-500"
+      aria-label="Toggle Dark Mode"
     />
   );
 };

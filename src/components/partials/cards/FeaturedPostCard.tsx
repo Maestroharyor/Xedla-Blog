@@ -12,6 +12,7 @@ const FeaturedPostCard = () => {
             src="/img/posts/featuredImage.webp"
             fill={true}
             className="object-cover"
+            loading="eager"
           />
         </figure>
       </Link>

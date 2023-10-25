@@ -32,7 +32,8 @@ const MobileHeader = () => {
         <SwitchToggle />
         <button
           className="bg-primary-full dark:bg-gray-200 rounded text-2xl p-3 text-white dark:text-primary-full"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Open Menu"
+          onClick={() => setIsMenuOpen(true)}
         >
           <MdMenu />
         </button>

@@ -16,6 +16,7 @@ const HeaderActions = () => {
         <button
           className="text-3xl text-gray-400 dark:hover:text-secondary-50 hover:text-gray-800 transition-all duration-300 ease-in-out"
           onClick={() => setIsSearchOpen(true)}
+          aria-label="Open Search"
         >
           <MdSearch />
         </button>
@@ -39,6 +40,7 @@ const HeaderActions = () => {
           />
           <button
             className="text-2xl text-gray-400 dark:hover:text-secondary-50 hover:text-gray-800 transition-all duration-300 ease-in-out"
+            aria-label="Close Search"
             onClick={() => setIsSearchOpen(false)}
           >
             <MdClose />
