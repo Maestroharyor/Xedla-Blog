@@ -1,13 +1,14 @@
 import PostPagination from "@/components/partials/PostPagination";
-import FeaturedPostCard from "@/components/partials/cards/FeaturedPostCard";
 import Postcard from "@/components/partials/cards/Postcard";
-import Image from "next/image";
+import React from "react";
 
-export default function Home() {
+const CategoryPage = () => {
   return (
-    <div>
+    <div className="py-10 space-y-8">
+      <h1 className="text-3xl font-bold text-center lg:text-5xl">
+        Show Posts in <span className="text-primary-full">This</span> Category
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-10 py-10">
-        <FeaturedPostCard />
         <Postcard />
         <Postcard />
         <Postcard />
@@ -16,4 +17,6 @@ export default function Home() {
       <PostPagination />
     </div>
   );
-}
+};
+
+export default CategoryPage;
