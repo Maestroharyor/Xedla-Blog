@@ -4,7 +4,7 @@ import Postcard from "@/components/partials/cards/Postcard";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
-const page = () => {
+const SearchPage = () => {
   const router = useRouter();
   const searchTerm = useSearchParams().get("query");
   const [searchText, setSearchText] = React.useState("");
@@ -16,7 +16,7 @@ const page = () => {
           <h1 className="text-3xl font-bold text-center lg:text-5xl">
             Searching for{" "}
             <span className="text-primary-full dark:text-secondary-50">
-              "This"
+              &quot;This&quot;
             </span>{" "}
             in Posts
           </h1>
@@ -93,4 +93,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SearchPage;
