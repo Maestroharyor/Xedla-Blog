@@ -27,7 +27,6 @@ type Props = {
 const Home = ({ posts }: Props) => {
   const featuredPost: postDatatype = posts[0];
   const remainingPosts: postDatatype[] = posts.slice(1);
-  console.log(posts);
 
   return (
     <DefaultLayout>

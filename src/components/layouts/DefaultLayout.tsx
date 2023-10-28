@@ -59,7 +59,14 @@ const DefaultLayout = ({
 
   return (
     <>
-      {routeChange && <LoadingBar color="#4834D4" ref={ref} />}
+      {routeChange && (
+        <LoadingBar
+          color="#470973"
+          ref={ref}
+          height={10}
+          className="transition-all duration-300"
+        />
+      )}
       <SEOHeader
         title={title}
         metadescription={metadescription}

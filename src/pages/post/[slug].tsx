@@ -12,7 +12,7 @@ export const getServerSideProps = (async ({ params }) => {
   const postRequest = await axios.get(
     `${baseUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`
   );
-  console.log(`${baseUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`);
+
   return { props: { post: postRequest.data[0] } };
 }) satisfies GetServerSideProps<{
   post: postDatatype;
@@ -21,7 +21,6 @@ export const getServerSideProps = (async ({ params }) => {
 const PostDetailPage = ({
   post,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(post);
   const description = post.excerpt.rendered.replace(/<[^>]+>/g, "");
   return (
     <DefaultLayout
