@@ -39,7 +39,11 @@ const Metadata = ({ title, metadescription, imageUrl }: Props) => {
 
       {/* Open Graph */}
       <meta property="og:url" content={router.pathname} key="ogurl" />
-      <meta property="og:image" content={imageUrl} key="ogimage" />
+      <meta
+        property="og:image"
+        content={imageUrl || "/img/brand/Xedla Logo.png"}
+        key="ogimage"
+      />
       <meta property="og:site_name" content={"Xedla Pay"} key="ogsitename" />
       <meta property="og:title" content={titleView} key="ogtitle" />
       <meta property="og:description" content={description} key="ogdesc" />
