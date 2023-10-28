@@ -148,6 +148,7 @@ const CategoryPage = ({
               </div>
             )}
             {isPostsLoading && <PageLoader isCategoryPage />}
+            <PageLoader />
             <PostPagination
               totalPosts={totalPosts}
               totalPages={totalPages}
