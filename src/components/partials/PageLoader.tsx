@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loading = () => {
+const PageLoader = () => {
   return (
     <div className="grid animate-pulse grid-cols-1 gap-x-10 gap-y-16 py-10 md:grid-cols-2">
       <div className="col-span-2 space-y-4">
@@ -52,4 +52,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default PageLoader;

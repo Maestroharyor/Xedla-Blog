@@ -1,16 +1,40 @@
 import React from "react";
 import Image from "next/image";
 import BlogShare from "@/components/elements/BlogShareComponent";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import axios from "axios";
+import { baseUrl } from "@/server";
+import { postDatatype } from "@/types";
+import DefaultLayout from "@/components/layouts/DefaultLayout";
 
-const PostDetailPage = () => {
+export const getServerSideProps = (async ({ params }) => {
+  const { slug } = params as { slug: string };
+  const postRequest = await axios.get(
+    `${baseUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`
+  );
+  console.log(`${baseUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`);
+  return { props: { post: postRequest.data[0] } };
+}) satisfies GetServerSideProps<{
+  post: postDatatype;
+}>;
+
+const PostDetailPage = ({
+  post,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log(post);
+  const description = post.excerpt.rendered.replace(/<[^>]+>/g, "");
   return (
-    <>
+    <DefaultLayout
+      title={post.title.rendered}
+      metadescription={description}
+      imageUrl={post._embedded["wp:featuredmedia"][0].source_url}
+    >
       <main className="pt-10 pb-32  antialiased text-lg post_detail">
         {/* Featured Image */}
         <figure className="rounded overflow-hidden w-full  h-[320px] lg:h-[470px] relative">
           <Image
             alt="Xedla Pay"
-            src="/img/posts/featuredImage.webp"
+            src={post._embedded["wp:featuredmedia"][0].source_url}
             fill={true}
             className="object-cover"
           />
@@ -18,14 +42,18 @@ const PostDetailPage = () => {
 
         <header className="mb-4 lg:mb-6 not-format px-4">
           <h1 className="mb-4 text-2xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">
-            Best practices for successful prototypes
+            {post.title.rendered}
           </h1>
         </header>
 
         {/* Body */}
         <div className="flex flex-col lg:flex-row justify-between px-4 mx-auto max-w-screen-xl  h-full relative gap-10">
           <BlogShare />
-          <article className="mx-auto w-full  format format-sm sm:format-base lg:format-lg format-blue dark:format-invert flex-1">
+          <article
+            dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+            className="mx-auto w-full  format format-sm sm:format-base lg:format-lg format-blue dark:format-invert flex-1"
+          ></article>
+          {/* <article className="mx-auto w-full  format format-sm sm:format-base lg:format-lg format-blue dark:format-invert flex-1">
             <p className="lead">
               Flowbite is an open-source library of UI components built with the
               utility-first classes from Tailwind CSS. It also includes
@@ -275,10 +303,10 @@ const PostDetailPage = () => {
               And there you have it! Everything you need to design and share
               prototypes — right in Flowbite Figma.
             </p>
-          </article>
+          </article> */}
         </div>
       </main>
-    </>
+    </DefaultLayout>
   );
 };
 

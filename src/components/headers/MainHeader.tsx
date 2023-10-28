@@ -58,7 +58,7 @@ const Mainheader = () => {
             {categoryMenu.map((item) => (
               <div key={item.name}>
                 <Link
-                  href={`/category/${item.link}`}
+                  href={`/category${item.link}`}
                   className="group py-3 flex gap-1 items-center relative text-primary-full dark:text-gray-100 dark:hover:text-secondary-50 hover:text-primary-100 transition-all duration-300 ease-in-out"
                 >
                   <p className="text-base  ">{item.name}</p>
