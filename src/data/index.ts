@@ -8,8 +8,8 @@ export const categoryMenu = [
 export const footerMenu = [
   { name: "About Xedla", link: "https://xedla.com/about", isExternal: true },
   { name: "Contact", link: "https://xedla.com/contact", isExternal: true },
-  { name: "Company News", link: "/company-news-1" },
-  { name: "Product Updates", link: "/product-updates-2" },
-  { name: "Marketing News", link: "/marketing-news-3" },
-  { name: "Ecommerce Tips", link: "/ecommerce-tips-4" },
+  { name: "Company News", link: "/category/company-news" },
+  { name: "Product Updates", link: "/category/product-updates" },
+  { name: "Marketing News", link: "/category/marketing-news" },
+  { name: "Ecommerce Tips", link: "/category/ecommerce-tips" },
 ];
