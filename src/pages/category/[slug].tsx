@@ -105,6 +105,7 @@ export const getStaticProps = (async (context) => {
       category: categoryRequest.data[0],
       posts: categoryPostRequest.data,
     },
+    revalidate: 10,
   };
 }) satisfies GetStaticProps<{
   posts: postDatatype[];
@@ -117,14 +118,14 @@ const CategoryPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <DefaultLayout
-      title={`${category.name} Posts`}
+      title={`${category?.name || "Category"} Posts`}
       metadescription={category.description}
     >
       <div className="py-10 space-y-8">
         <h1 className="text-3xl font-bold text-center lg:text-5xl">
           Show Posts in{" "}
           <span className="text-primary-full dark:text-secondary-50">
-            {capitalize(category.name)}
+            {capitalize(category?.name || "")}
           </span>{" "}
           Category
         </h1>
