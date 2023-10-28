@@ -2,33 +2,84 @@
 import DefaultLayout from "@/components/layouts/DefaultLayout";
 import PostPagination from "@/components/partials/PostPagination";
 import Postcard from "@/components/partials/cards/Postcard";
-import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import axios from "axios";
 import { baseUrl } from "@/server";
 import { postDatatype } from "@/types";
+import { message } from "antd";
+import PageLoader from "@/components/partials/PageLoader";
 
 export const getServerSideProps = (async ({ query }) => {
   if (query) {
     const postsRequest = await axios.get(
       `${baseUrl}/wp-json/wp/v2/posts?search=${query}&_embed`
     );
-
-    return { props: { posts: postsRequest.data } };
+    const totalPostsData = postsRequest.headers["x-wp-total"];
+    const totalPagesData = postsRequest.headers["x-wp-totalpages"];
+    return {
+      props: { posts: postsRequest.data, totalPostsData, totalPagesData },
+    };
   }
 
-  return { props: { posts: [] } };
+  return { props: { posts: [], totalPostsData: 1, totalPagesData: 1 } };
 }) satisfies GetServerSideProps<{
   posts: postDatatype[];
+  totalPostsData: number;
+  totalPagesData: number;
 }>;
 
 const SearchPage = ({
   posts,
+  totalPagesData,
+  totalPostsData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const searchTerm = useSearchParams().get("query");
   const [searchText, setSearchText] = React.useState("");
+  const [allPosts, setAllPosts] = useState(posts);
+  const [totalPosts, setTotalPosts] = useState(totalPostsData);
+  const [totalPages, setTotalPages] = useState(totalPagesData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(9);
+  const [isPostsLoading, setIsPostsLoading] = useState(false);
+
+  const fetchPosts = async ({
+    page,
+    perPage,
+  }: {
+    page?: number;
+    perPage?: number;
+  }) => {
+    setIsPostsLoading(true);
+    try {
+      const postsRequest = await axios.get(
+        `${baseUrl}/wp-json/wp/v2/posts?_embed&page=${page || 1}&per_page=${
+          perPage || 9
+        }`
+      );
+      setTotalPages(postsRequest.headers["x-wp-totalpages"]);
+      setTotalPosts(postsRequest.headers["x-wp-total"]);
+      setCurrentPage(page || 1);
+      setPerPage(perPage || 9);
+      setAllPosts(postsRequest.data);
+    } catch (error: any) {
+      message.error(
+        error?.response?.message || error?.message || "An Error Occured"
+      );
+    } finally {
+      setIsPostsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const { page, per_page } = router.query;
+    if (page || per_page) {
+      fetchPosts({ page: Number(page), perPage: Number(per_page) });
+    }
+  }, [router.query]);
 
   return (
     <DefaultLayout
@@ -48,12 +99,20 @@ const SearchPage = ({
             {posts.length ? (
               <>
                 {" "}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-10 py-10">
-                  {posts.map((post: postDatatype) => (
-                    <Postcard key={post.id} post={post} />
-                  ))}
-                </div>
-                <PostPagination />
+                {!isPostsLoading && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-10 py-10">
+                    {posts.map((post: postDatatype) => (
+                      <Postcard key={post.id} post={post} />
+                    ))}
+                  </div>
+                )}
+                {isPostsLoading && <PageLoader isCategoryPage />}
+                <PostPagination
+                  totalPosts={totalPosts}
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  perPage={perPage}
+                />
               </>
             ) : (
               <div className="text-lg flex items-center justify-center">
