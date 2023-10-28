@@ -5,8 +5,10 @@ import React, { useEffect } from "react";
 import HeaderActions from "./HeaderActions";
 import TopProgressBar from "@/components/elements/TopProgressBar";
 import { categoryMenu } from "@/data";
+import { useRouter } from "next/router";
 
 const Mainheader = () => {
+  const router = useRouter();
   useEffect(() => {
     const header = document.querySelector("#desktop_header") as HTMLElement;
     let lastScrollTop = 0;
@@ -59,7 +61,11 @@ const Mainheader = () => {
               <div key={item.name}>
                 <Link
                   href={`/category${item.link}`}
-                  className="group py-3 flex gap-1 items-center relative text-primary-full dark:text-gray-100 dark:hover:text-secondary-50 hover:text-primary-100 transition-all duration-300 ease-in-out"
+                  className={`group py-3 flex gap-1 items-center relative dark:text-gray-100 dark:hover:text-secondary-70 hover:text-primary-70 transition-all duration-300 ease-in-out ${
+                    `/${router.query.slug}` === item.link
+                      ? "font-bold text-primary-full dark:text-secondary-50"
+                      : "text-gray-700 "
+                  }`}
                 >
                   <p className="text-base  ">{item.name}</p>
                 </Link>

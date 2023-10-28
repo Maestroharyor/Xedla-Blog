@@ -36,7 +36,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         window.removeEventListener("scroll", scrollHandler);
       };
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   }, []);
 
