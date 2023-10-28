@@ -86,10 +86,10 @@ export const getStaticProps = (async (context) => {
   const { slug } = context.params as IParams;
   // console.log({ slug, baseUrl });
   // console.log({ slug });
-  const categorySlug = slug.split("-").slice(0, -1).join("-");
+  // const categorySlug = slug.split("-").slice(0, -1).join("-");
   // console.log({ categorySlug });
   const categoryRequest = await axios.get(
-    `${baseUrl}/wp-json/wp/v2/categories?slug=${categorySlug}`
+    `${baseUrl}/wp-json/wp/v2/categories?slug=${slug}`
   );
   // console.log({ categoryRequest: categoryRequest.data });
   const categoryID = categoryRequest.data[0].id;
